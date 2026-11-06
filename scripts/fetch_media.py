@@ -134,6 +134,24 @@ for name, fid in MAN.get("videos", {}).items():
         try: save_video(dest, name)
         except Exception as e: report.append(f"FALHA video {name}: {e}")
 
+# clipes: trecho de um vídeo bruto (nome: [vídeo, início, fim] em fração da duração)
+for name, (vid, a, b) in MAN.get("clips", {}).items():
+    src = RAW / f"{vid}.mp4"
+    if not src.exists() or not FFMPEG:
+        report.append(f"FALHA clip {name}: {vid} indisponível"); continue
+    outs = [VID / f"{name}.mp4", VID / f"{name}.jpg", VID / f"{name}-m.mp4"]
+    def produce(src=src, name=name, a=a, b=b):
+        dur = duration_of(src)
+        for suffix, maxw, crf in (("", 1280, 28), ("-m", 720, 31)):
+            subprocess.run([FFMPEG, "-y", "-ss", f"{dur*a:.2f}", "-to", f"{dur*b:.2f}", "-i", str(src), "-vf", f"scale='min({maxw},iw)':-2",
+                            "-c:v", "libx264", "-crf", str(crf), "-preset", "medium", "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart", str(VID / f"{name}{suffix}.mp4")], check=True, capture_output=True)
+        subprocess.run([FFMPEG, "-y", "-ss", "0.5", "-i", str(VID / f"{name}.mp4"), "-frames:v", "1", "-q:v", "3", str(VID / f"{name}.jpg")], check=True, capture_output=True)
+        report.append(f"ok clip {name}")
+    try:
+        cached("video", name, outs, produce)
+    except Exception as e:
+        report.append(f"FALHA clip {name}: {e}")
+
 # quadros de vídeo usados como foto (nome: [vídeo, fração da duração])
 for name, (vid, frac) in MAN.get("frames", {}).items():
     src = VID / f"{vid}.mp4"
