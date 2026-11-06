@@ -4,17 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>D'Ferraro Cozinha Contemporânea — Santo Amaro, São Paulo</title>
-<meta name="description" content="Gastronomia, vinho e bons encontros no térreo do Complexo 17007 Nações. Café da manhã, almoço executivo, happy hour e jantar à la carte. Reserve sua mesa.">
+<meta name="description" content="Gastronomia, vinho e bons encontros no térreo do Complexo 17007 Nações. Happy hour, aniversários, jantar a dois e reuniões de negócios. Reserve sua mesa.">
 <meta name="theme-color" content="#1A0F08">
 <meta property="og:title" content="D'Ferraro Cozinha Contemporânea">
-<meta property="og:description" content="Gastronomia, vinho e bons encontros. Av. das Nações Unidas, 17007 — Santo Amaro, São Paulo.">
-<meta property="og:image" content="/assets/img/paella.webp?b=2">
+<meta property="og:description" content="Gastronomia, vinho e bons encontros. Av. das Nações Unidas, 17007 — Santo Amaro, São Paulo. Reserve sua mesa.">
+<meta property="og:image" content="https://dferraro.vercel.app/assets/og.jpg?b=3">
 <meta property="og:type" content="restaurant">
-<link rel="icon" href="/assets/brand/favicon.png?b=2" type="image/png">
+<meta property="og:locale" content="pt_BR">
+<link rel="icon" href="/assets/brand/favicon.png?b=3" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?b=3">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -40,16 +41,16 @@
   <span class="loader-line"></span>
 </div>
 
-<a class="skip" href="#cardapio">Ir para o cardápio</a>
+<a class="skip" href="#ocasioes">Ir para reservas</a>
 
 <header class="nav" id="nav">
   <a class="nav-brand" href="#topo" aria-label="D'Ferraro — início">
-    <img src="/assets/brand/logo.png?b=2" alt="D'Ferraro" width="140" height="52">
+    <img src="/assets/brand/logo.png?b=3" alt="D'Ferraro" width="140" height="56">
   </a>
   <nav class="nav-links" aria-label="Seções">
     <a href="#casa">A casa</a>
-    <a href="#cardapio">Cardápio</a>
-    <a href="#vinhos">Vinhos</a>
+    <a href="#ocasioes">Ocasiões</a>
+    <a href="#sabores">Sabores</a>
     <a href="#avaliacoes">Avaliações</a>
     <a href="#localizacao">Como chegar</a>
   </nav>
@@ -62,9 +63,9 @@
 <div class="menu-mobile" id="menu-mobile" hidden>
   <nav aria-label="Seções">
     <a href="#casa">A casa</a>
-    <a href="#momentos">O dia</a>
-    <a href="#cardapio">Cardápio</a>
-    <a href="#vinhos">Vinhos</a>
+    <a href="#ocasioes">Ocasiões</a>
+    <a href="#sabores">Sabores</a>
+    <a href="#dia">O dia</a>
     <a href="#avaliacoes">Avaliações</a>
     <a href="#localizacao">Como chegar</a>
   </nav>
@@ -80,23 +81,23 @@
 <!-- Hero -->
 <section class="hero" id="hero">
   <div class="hero-media">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="/assets/video/v-casal.jpg?b=2" data-src="/assets/video/v-casal.mp4?b=2" data-src-m="/assets/video/v-casal-m.mp4?b=2"></video>
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="/assets/video/v-casal.jpg?b=3" data-src="/assets/video/v-casal.mp4?b=3" data-src-m="/assets/video/v-casal-m.mp4?b=3"></video>
   </div>
   <div class="hero-content">
     <p class="hero-kicker">Cozinha contemporânea em Santo Amaro, São Paulo</p>
     <h1 class="hero-title">Gastronomia, vinho<br>e bons encontros.</h1>
     <div class="hero-actions">
       <a class="btn btn-solid" href="https://dguests.com/reserva_mesa/Dferraro" target="_blank" rel="noopener">Reservar mesa</a>
-      <a class="link-line" href="#cardapio">Ver o cardápio</a>
+      <a class="link-line" href="#ocasioes">Para cada ocasião</a>
     </div>
   </div>
   <div class="hero-status" id="hero-status" aria-live="polite"></div>
 </section>
 
-<!-- A casa -->
-<section class="casa" id="casa">
+<!-- A casa (areia) -->
+<section class="casa sand" id="casa">
   <figure class="casa-figure">
-    <img src="/assets/img/fachada.webp?b=2" srcset="/assets/img/fachada-m.webp?b=2 960w, /assets/img/fachada.webp?b=2 1800w" sizes="(max-width: 900px) 100vw, 50vw" alt="Fachada do D'Ferraro no Complexo 17007 Nações, com a entrada de vidro e o letreiro iluminado" loading="lazy">
+    <img src="/assets/img/exterior-m.webp?b=3" srcset="/assets/img/exterior-m.webp?b=3 960w, /assets/img/exterior.webp?b=3 1280w" sizes="(max-width: 900px) 100vw, 50vw" alt="Entrada do D'Ferraro no Complexo 17007 Nações, entre o jardim e a fachada de vidro" loading="lazy">
   </figure>
   <div class="casa-text">
     <h2 class="t-display reveal">Alta gastronomia não se explica.<br><em>Se vive.</em></h2>
@@ -110,8 +111,103 @@
   </div>
 </section>
 
-<!-- O dia -->
-<section class="momentos" id="momentos">
+<!-- Ocasiões (escuro, interativo) -->
+<section class="ocasioes" id="ocasioes">
+  <div class="ocasioes-head">
+    <h2 class="t-display reveal">Uma mesa para cada ocasião</h2>
+    <p class="lede">Escolha o motivo. A casa cuida do resto.</p>
+  </div>
+  <div class="ocasioes-grid">
+    <ul class="oc-list" id="oc-list" role="tablist" aria-label="Ocasiões">
+      <li><button type="button" role="tab" aria-selected="true" data-oc="happy">Happy hour</button></li>
+      <li><button type="button" role="tab" aria-selected="false" data-oc="aniversario">Aniversário</button></li>
+      <li><button type="button" role="tab" aria-selected="false" data-oc="dois">Jantar a dois</button></li>
+      <li><button type="button" role="tab" aria-selected="false" data-oc="negocios">Reunião de negócios</button></li>
+      <li><button type="button" role="tab" aria-selected="false" data-oc="eventos">Eventos e grupos</button></li>
+    </ul>
+    <div class="oc-stage">
+      <div class="oc-media" id="oc-media">
+        <img class="oc-img is-on" data-oc="happy" src="/assets/img/bar-m.webp?b=3" alt="" loading="lazy">
+        <img class="oc-img" data-oc="aniversario" src="/assets/img/brinde-m.webp?b=3" alt="" loading="lazy">
+        <img class="oc-img" data-oc="dois" src="/assets/img/prato-jantar-m.webp?b=3" alt="" loading="lazy">
+        <img class="oc-img" data-oc="negocios" src="/assets/img/interior-m.webp?b=3" alt="" loading="lazy">
+        <img class="oc-img" data-oc="eventos" src="/assets/img/mesa-amigos-m.webp?b=3" alt="" loading="lazy">
+      </div>
+      <div class="oc-text" id="oc-text" role="tabpanel">
+        <div class="oc-panel is-on" data-oc="happy">
+          <h3>Happy hour</h3>
+          <p>Fim de tarde de quarta a sexta: chopp artesanal Paulistânia, coquetelaria clássica e petiscos para dividir, a poucos passos das torres da Nações Unidas.</p>
+          <p class="oc-meta">Quarta a sexta, até as 22h</p>
+          <a class="btn btn-solid" href="https://dguests.com/reserva_mesa/Dferraro" target="_blank" rel="noopener">Reservar para o happy hour</a>
+        </div>
+        <div class="oc-panel" data-oc="aniversario">
+          <h3>Aniversário</h3>
+          <p>Mesa reservada, brinde com espumante e uma sobremesa da casa para a noite ficar na memória. Avise nas observações da reserva e a equipe prepara tudo.</p>
+          <p class="oc-meta">Grupos de qualquer tamanho, mesa redonda para até 10</p>
+          <a class="btn btn-solid" href="https://dguests.com/reserva_mesa/Dferraro" target="_blank" rel="noopener">Reservar para aniversário</a>
+        </div>
+        <div class="oc-panel" data-oc="dois">
+          <h3>Jantar a dois</h3>
+          <p>Luz baixa, carta de vinhos de nove países e pratos de assinatura como o Filé Chateaubriand ao Rôti e a Paella de Frutos do Mar.</p>
+          <p class="oc-meta">Quarta a sexta, jantar até as 22h</p>
+          <a class="btn btn-solid" href="https://dguests.com/reserva_mesa/Dferraro" target="_blank" rel="noopener">Reservar jantar a dois</a>
+        </div>
+        <div class="oc-panel" data-oc="negocios">
+          <h3>Reunião de negócios</h3>
+          <p>Espaço reservado no salão, Wi-Fi, serviço discreto e menu executivo em três tempos para um almoço que rende.</p>
+          <p class="oc-meta">Segunda a sexta, das 11h30 às 15h</p>
+          <a class="btn btn-solid" href="https://dguests.com/reserva_mesa/Dferraro" target="_blank" rel="noopener">Reservar almoço de negócios</a>
+        </div>
+        <div class="oc-panel" data-oc="eventos">
+          <h3>Eventos e grupos</h3>
+          <p>Confraternizações, lançamentos e encontros de fim de ano: salão para até 130 pessoas e menus sob medida em formato coquetel, degustação ou à la carte.</p>
+          <p class="oc-meta">Também catering corporativo para reuniões e treinamentos</p>
+          <a class="btn btn-solid" href="https://wa.me/5511989040476?text=Ol%C3%A1!%20Gostaria%20de%20um%20or%C3%A7amento%20para%20evento%20no%20D%27Ferraro." target="_blank" rel="noopener">Pedir orçamento</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sabores (areia) -->
+<section class="sabores sand" id="sabores">
+  <div class="sabores-head">
+    <h2 class="t-display reveal">Um gosto do cardápio</h2>
+    <p class="lede">Clássicos reinterpretados com técnica e produto. Toque em um prato para abri-lo no cardápio digital, sempre na versão do dia.</p>
+  </div>
+  <div class="galeria">
+    <a class="gal-item gal-a" href="https://www.dguests.com.br/cardapio/Dferraro#:~:text=Paella%20de%20Frutos%20do%20Mar" target="_blank" rel="noopener" title="Abrir no cardápio digital">
+      <img src="/assets/img/paella-m.webp?b=3" srcset="/assets/img/paella-m.webp?b=3 960w, /assets/img/paella.webp?b=3 1800w" sizes="(max-width: 900px) 100vw, 55vw" alt="Paella de frutos do mar na panela de ferro" loading="lazy">
+      <figcaption><span>Paella de Frutos do Mar</span><span class="gal-price">R$ 119,00</span></figcaption>
+    </a>
+    <a class="gal-item gal-b" href="https://www.dguests.com.br/cardapio/Dferraro#:~:text=Steak%20Tartare" target="_blank" rel="noopener" title="Abrir no cardápio digital">
+      <img src="/assets/img/steak-tartare-m.webp?b=3" srcset="/assets/img/steak-tartare-m.webp?b=3 960w, /assets/img/steak-tartare.webp?b=3 1800w" sizes="(max-width: 900px) 100vw, 30vw" alt="Steak tartare com rúcula e torradas" loading="lazy">
+      <figcaption><span>Steak Tartare</span><span class="gal-price">R$ 55,00</span></figcaption>
+    </a>
+    <a class="gal-item gal-c" href="https://www.dguests.com.br/cardapio/Dferraro#:~:text=Camar%C3%B5es%20al%20Ajillo" target="_blank" rel="noopener" title="Abrir no cardápio digital">
+      <img src="/assets/img/camaroes-al-ajillo-m.webp?b=3" srcset="/assets/img/camaroes-al-ajillo-m.webp?b=3 960w, /assets/img/camaroes-al-ajillo.webp?b=3 1800w" sizes="(max-width: 900px) 100vw, 30vw" alt="Camarões al ajillo na frigideira com pão" loading="lazy">
+      <figcaption><span>Camarões al Ajillo</span><span class="gal-price">R$ 85,00</span></figcaption>
+    </a>
+    <a class="gal-item gal-d" href="https://www.dguests.com.br/cardapio/Dferraro#:~:text=Arroz%20de%20costela" target="_blank" rel="noopener" title="Abrir no cardápio digital">
+      <img src="/assets/img/arroz-de-costela-m.webp?b=3" srcset="/assets/img/arroz-de-costela-m.webp?b=3 960w, /assets/img/arroz-de-costela.webp?b=3 1800w" sizes="(max-width: 900px) 100vw, 30vw" alt="Arroz de costela com ovo frito de gema mole" loading="lazy">
+      <figcaption><span>Arroz de Costela</span><span class="gal-price">R$ 65,00</span></figcaption>
+    </a>
+    <a class="gal-item gal-e" href="https://www.dguests.com.br/cardapio/Dferraro#:~:text=Aperol%20Spritz" target="_blank" rel="noopener" title="Abrir no cardápio digital">
+      <img src="/assets/img/aperol-spritz-m.webp?b=3" srcset="/assets/img/aperol-spritz-m.webp?b=3 960w, /assets/img/aperol-spritz.webp?b=3 1800w" sizes="(max-width: 900px) 100vw, 30vw" alt="Aperol Spritz com fatia de laranja" loading="lazy">
+      <figcaption><span>Aperol Spritz</span><span class="gal-price">R$ 33,00</span></figcaption>
+    </a>
+  </div>
+  <div class="sabores-foot">
+    <p>Menu executivo em três tempos por <strong>R$ 73,00</strong>, de segunda a sexta. Carta com mais de 50 rótulos de nove países.</p>
+    <div class="sabores-actions">
+      <a class="btn btn-wine" href="https://dguests.com/cardapio/Dferraro" target="_blank" rel="noopener">Ver cardápio completo</a>
+      <button type="button" class="link-line" id="open-menu">Perguntar preços ao concierge</button>
+    </div>
+  </div>
+</section>
+
+<!-- O dia (escuro) -->
+<section class="momentos" id="dia">
   <div class="momentos-head">
     <h2 class="t-display reveal">Um dia no D'Ferraro</h2>
     <p class="lede">A casa muda de luz ao longo do dia. A mesa, não.</p>
@@ -131,7 +227,7 @@
       <span class="tl-time">Fim de tarde</span>
       <h3>Happy hour</h3>
       <p>Chopp artesanal Paulistânia, coquetelaria clássica e petiscos para dividir, de quarta a sexta.</p>
-      <video class="tl-video" autoplay muted loop playsinline preload="none" poster="/assets/video/v-margarita.jpg?b=2" data-src="/assets/video/v-margarita.mp4?b=2" data-src-m="/assets/video/v-margarita-m.mp4?b=2" aria-hidden="true"></video>
+      <video class="tl-video" autoplay muted loop playsinline preload="none" poster="/assets/video/v-margarita.jpg?b=3" data-src="/assets/video/v-margarita.mp4?b=3" data-src-m="/assets/video/v-margarita-m.mp4?b=3" aria-hidden="true"></video>
     </li>
     <li>
       <span class="tl-time">Até as 22h</span>
@@ -141,64 +237,14 @@
   </ol>
 </section>
 
-<!-- Assinatura -->
-<section class="assinatura" id="assinatura">
-  <div class="assinatura-head">
-    <h2 class="t-display reveal">Pratos de assinatura</h2>
-    <p class="lede">Clássicos reinterpretados com técnica e produto. Toque em um prato para vê-lo no cardápio.</p>
-  </div>
-  <div class="galeria">
-    <a class="gal-item gal-a" href="#prato-paella-de-frutos-do-mar">
-      <img src="/assets/img/paella-m.webp?b=2" srcset="/assets/img/paella-m.webp?b=2 960w, /assets/img/paella.webp?b=2 1800w" sizes="(max-width: 900px) 100vw, 55vw" alt="Paella de frutos do mar na panela de ferro" loading="lazy">
-      <figcaption><span>Paella de Frutos do Mar</span><span class="gal-price">R$ 119,00</span></figcaption>
-    </a>
-    <a class="gal-item gal-b" href="#prato-steak-tartare">
-      <img src="/assets/img/steak-tartare-m.webp?b=2" srcset="/assets/img/steak-tartare-m.webp?b=2 960w, /assets/img/steak-tartare.webp?b=2 1800w" sizes="(max-width: 900px) 100vw, 30vw" alt="Steak tartare com rúcula e torradas" loading="lazy">
-      <figcaption><span>Steak Tartare</span><span class="gal-price">R$ 55,00</span></figcaption>
-    </a>
-    <a class="gal-item gal-c" href="#prato-camaroes-al-ajillo">
-      <img src="/assets/img/camaroes-al-ajillo-m.webp?b=2" srcset="/assets/img/camaroes-al-ajillo-m.webp?b=2 960w, /assets/img/camaroes-al-ajillo.webp?b=2 1800w" sizes="(max-width: 900px) 100vw, 30vw" alt="Camarões al ajillo na frigideira com pão" loading="lazy">
-      <figcaption><span>Camarões al Ajillo</span><span class="gal-price">R$ 85,00</span></figcaption>
-    </a>
-    <a class="gal-item gal-d" href="#prato-arroz-de-costela">
-      <img src="/assets/img/arroz-de-costela-m.webp?b=2" srcset="/assets/img/arroz-de-costela-m.webp?b=2 960w, /assets/img/arroz-de-costela.webp?b=2 1800w" sizes="(max-width: 900px) 100vw, 30vw" alt="Arroz de costela com ovo frito de gema mole" loading="lazy">
-      <figcaption><span>Arroz de Costela</span><span class="gal-price">R$ 65,00</span></figcaption>
-    </a>
-    <a class="gal-item gal-e" href="#prato-aperol-spritz">
-      <img src="/assets/img/aperol-spritz-m.webp?b=2" srcset="/assets/img/aperol-spritz-m.webp?b=2 960w, /assets/img/aperol-spritz.webp?b=2 1800w" sizes="(max-width: 900px) 100vw, 30vw" alt="Aperol Spritz com fatia de laranja" loading="lazy">
-      <figcaption><span>Aperol Spritz</span><span class="gal-price">R$ 33,00</span></figcaption>
-    </a>
-  </div>
-</section>
-
-<!-- Cardápio -->
-<section class="cardapio paper" id="cardapio">
-  <div class="cardapio-head">
-    <h2 class="t-display reveal">Cardápio</h2>
-    <p class="lede">Preços em reais, serviço não incluso. O cardápio muda com a estação; o cardápio digital é sempre a versão do dia.</p>
-    <a class="link-line" href="https://dguests.com/cardapio/Dferraro" target="_blank" rel="noopener">Abrir o cardápio digital</a>
-  </div>
-  <nav class="cat-nav" id="cat-nav" aria-label="Categorias do cardápio"></nav>
-  <div class="menu-body" id="menu-body"></div>
-</section>
-
-<!-- Vinhos -->
-<section class="vinhos paper" id="vinhos">
-  <div class="vinhos-head">
-    <h2 class="t-display reveal">Carta de vinhos</h2>
-    <p class="lede">Rótulos de nove países, de espumantes a tintos de guarda, além de meias garrafas e vinhos em taça.</p>
-  </div>
-  <div class="wine-body" id="wine-body"></div>
-</section>
-
-<!-- Avaliações -->
-<section class="avaliacoes" id="avaliacoes">
+<!-- Avaliações (areia) -->
+<section class="avaliacoes sand" id="avaliacoes">
   <div class="rating">
     <p class="rating-num">4,8</p>
     <p class="stars" aria-label="4,8 de 5 estrelas"><span></span><span></span><span></span><span></span><span></span></p>
     <p class="rating-count">64 avaliações no Google</p>
     <div class="rating-actions">
-      <a class="btn btn-solid" id="review-write" href="#" target="_blank" rel="noopener">Avaliar no Google</a>
+      <a class="btn btn-wine" id="review-write" href="#" target="_blank" rel="noopener">Avaliar no Google</a>
       <a class="link-line" id="review-read" href="#" target="_blank" rel="noopener">Ler todas as avaliações</a>
       <a class="link-line" id="review-dguests" href="#" target="_blank" rel="noopener">Avaliar pelo DGuests</a>
     </div>
@@ -212,11 +258,11 @@
   </div>
 </section>
 
-<!-- Reservas -->
+<!-- Reservas (vinho) -->
 <section class="reservas" id="reservas">
   <div class="reservas-inner">
     <h2 class="t-display reveal">Reserve sua mesa</h2>
-    <p class="lede">Jantar a dois, encontro de negócios, aniversário ou happy hour com a equipe. A reserva leva um minuto e a mesa espera por você.</p>
+    <p class="lede">Happy hour com a equipe, aniversário, jantar a dois ou almoço de negócios. A reserva leva um minuto e a mesa espera por você.</p>
     <div class="reservas-actions">
       <a class="btn btn-solid" href="https://dguests.com/reserva_mesa/Dferraro" target="_blank" rel="noopener">Reservar pelo DGuests</a>
       <a class="btn btn-ghost" href="https://wa.me/5511989040476?text=Ol%C3%A1!%20Gostaria%20de%20reservar%20uma%20mesa%20no%20D%27Ferraro." target="_blank" rel="noopener">Falar no WhatsApp</a>
@@ -225,7 +271,7 @@
   </div>
 </section>
 
-<!-- Como chegar -->
+<!-- Como chegar (escuro) -->
 <section class="local" id="localizacao">
   <div class="local-info">
     <h2 class="t-display reveal">Como chegar</h2>
@@ -270,7 +316,7 @@
 
 <footer class="footer">
   <div class="footer-top">
-    <img class="footer-logo" src="/assets/brand/logo.png?b=2" alt="D'Ferraro" width="180" height="66" loading="lazy">
+    <img class="footer-logo" src="/assets/brand/logo.png?b=3" alt="D'Ferraro" width="180" height="72" loading="lazy">
     <div class="footer-col">
       <p>Av. das Nações Unidas, 17007<br>Piso térreo, Torre Alpha<br>Santo Amaro, São Paulo</p>
     </div>
@@ -293,6 +339,7 @@
   </div>
 </footer>
 
+
 <!-- Concierge -->
 <div class="concierge" id="concierge">
   <button class="concierge-btn" id="concierge-btn" aria-label="Abrir concierge" aria-expanded="false" aria-controls="concierge-panel">
@@ -308,10 +355,10 @@
     </div>
     <div class="concierge-log" id="concierge-log" aria-live="polite"></div>
     <div class="concierge-chips" id="concierge-chips">
+      <button type="button" data-q="Quero reservar para um aniversário">Aniversário</button>
+      <button type="button" data-q="Como funciona o happy hour?">Happy hour</button>
       <button type="button" data-q="Quais os horários?">Horários</button>
-      <button type="button" data-q="Quero reservar uma mesa">Reservar</button>
       <button type="button" data-q="O que tem de peixe?">Pescados</button>
-      <button type="button" data-q="Tem opção vegana?">Vegano</button>
       <button type="button" data-q="Como chegar?">Como chegar</button>
     </div>
     <form class="concierge-form" id="concierge-form" autocomplete="off">
@@ -323,8 +370,8 @@
 
 <div class="dish-preview" id="dish-preview" aria-hidden="true"><img alt=""></div>
 
-<script src="/menu.js"></script>
-<script src="/reviews.js"></script>
-<script src="/app.js"></script>
+<script src="/menu.js?b=3"></script>
+<script src="/reviews.js?b=3"></script>
+<script src="/app.js?b=3"></script>
 </body>
 </html>

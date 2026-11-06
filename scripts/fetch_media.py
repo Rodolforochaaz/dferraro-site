@@ -103,6 +103,31 @@ for name, fid in MAN.get("videos", {}).items():
         try: save_video(dest, name)
         except Exception as e: report.append(f"FALHA video {name}: {e}")
 
+# quadros de vídeo usados como foto (nome: [vídeo, fração da duração])
+for name, (vid, frac) in MAN.get("frames", {}).items():
+    src = VID / f"{vid}.mp4"
+    if not src.exists() or not FFMPEG:
+        report.append(f"FALHA frame {name}: vídeo {vid} indisponível"); continue
+    try:
+        dur = duration_of(src)
+        tmp = RAW / f"frame-{name}.png"
+        subprocess.run([FFMPEG, "-y", "-ss", f"{dur*frac:.2f}", "-i", str(src), "-frames:v", "1", str(tmp)], check=True, capture_output=True)
+        save_image(tmp, name)
+    except Exception as e:
+        report.append(f"FALHA frame {name}: {e}")
+
+# imagem para compartilhamento (WhatsApp/Instagram): 1200x630 jpg
+try:
+    og_src = MAN.get("og", "paella")
+    im = Image.open(IMG / f"{og_src}.webp").convert("RGB")
+    w, h = im.size; tw, th = 1200, 630
+    scale = max(tw / w, th / h); im = im.resize((round(w * scale), round(h * scale)), Image.LANCZOS)
+    l, t = (im.width - tw) // 2, (im.height - th) // 2
+    im.crop((l, t, l + tw, t + th)).save(ASSETS / "og.jpg", "JPEG", quality=82, optimize=True)
+    report.append("ok og.jpg")
+except Exception as e:
+    report.append(f"FALHA og: {e}")
+
 for name, url in MAN.get("urls", {}).items():
     ext = os.path.splitext(url.split("?")[0])[1] or ".bin"
     dest = BRAND / f"{name}{ext}"

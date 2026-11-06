@@ -36,6 +36,16 @@
     "v-cidade": "1LJZG-ECkIe34JwbVGalkSADfAGlLIZrU"
   },
   "mobile": ["v-casal", "v-margarita"],
+  "frames": {
+    "brinde": ["v-casal", 0.86],
+    "mesa-amigos": ["v-casal", 0.62],
+    "prato-jantar": ["v-casal", 0.35],
+    "interior": ["v-fachada", 0.6],
+    "exterior": ["v-fachada", 0.86],
+    "bar": ["v-letreiro", 0.4],
+    "buffet": ["v-salao", 0.08]
+  },
+  "og": "paella",
   "urls": {
     "logo-oficial": "https://dferrarocozinha.com.br/wp-content/uploads/2026/09/Logotipo-Apresentacao.png",
     "dg-avatar": "https://dg-media.com.br/avatars/avatar_707640_1778515429.png",
