@@ -192,8 +192,12 @@
     const cat = MENU.categories.find((c) => c.id === tab);
     return cat ? cat.items.slice(0, PICKS[tab] || 6).map((i) => allItems.find((a) => a.name === i.name && a.cat === cat.name) || i) : [];
   }
-  function renderMenu(list, hint) {
-    menuList.innerHTML = list.length ? list.map(itemHTML).join("") : `<p class="menu-empty">Nada com esse nome por aqui. Tente outro ingrediente, ou pergunte ao concierge.</p>`;
+  function renderMenu(list, hint, q) {
+    const qLink = DG_MENU + (q ? "#:~:text=" + encodeURIComponent(q).replace(/-/g, "%2D") : "");
+    menuList.innerHTML = list.length ? list.map(itemHTML).join("") : `<div class="menu-empty">
+        <p>Não encontramos ${q ? `“${esc(q)}”` : "isso"} nesta seleção. Aqui mostramos só alguns exemplos; o cardápio completo, sempre na versão do dia, está no cardápio digital.</p>
+        <a class="btn btn-wine" href="${qLink}" target="_blank" rel="noopener">Procurar no cardápio completo</a>
+      </div>`;
     if (hint) menuHint.textContent = hint;
   }
   if (menuTabs) {
@@ -214,7 +218,7 @@
         if (q.length < 2) { selectTab(activeTab); return; }
         tabBtns.forEach((b) => b.setAttribute("aria-selected", "false"));
         const hits = search(q, 8);
-        renderMenu(hits, hits.length ? `${hits.length} ${hits.length === 1 ? "resultado" : "resultados"} para “${q}”.` : `Nenhum resultado para “${q}”.`);
+        renderMenu(hits, hits.length ? `${hits.length} ${hits.length === 1 ? "resultado" : "resultados"} para “${q}”. Esta seção mostra exemplos; o cardápio digital tem a lista completa.` : `Nenhum resultado para “${q}” nesta seleção.`, q);
       }, 120);
     });
     selectTab("destaques");
@@ -357,6 +361,6 @@
     if (has(q, "oi", "ola", "bom dia", "boa tarde", "boa noite") && q.length < 16) return greeting();
     const hits = search(raw);
     if (hits.length) return `Encontrei no cardápio:${hits.map(hit).join("")}`;
-    return `Não encontrei isso no cardápio. Posso ajudar com pratos, preços, horários, reservas e como chegar. Para outras dúvidas, a equipe responde no ${link(WA + "?text=" + encodeURIComponent("Olá! Tenho uma dúvida sobre o D'Ferraro: " + raw), "WhatsApp")}.`;
+    return `Não encontrei isso na minha lista, que traz só uma parte do cardápio. Vale conferir o ${link(DG_MENU + "#:~:text=" + encodeURIComponent(raw).replace(/-/g, "%2D"), "cardápio completo, na versão do dia")}. Também posso ajudar com preços, horários, reservas e como chegar, e a equipe responde no ${link(WA + "?text=" + encodeURIComponent("Olá! Tenho uma dúvida sobre o D'Ferraro: " + raw), "WhatsApp")}.`;
   }
 })();

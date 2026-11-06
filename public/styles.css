@@ -100,8 +100,8 @@ strong { font-weight: 500; }
 #loader.done { opacity: 0; visibility: hidden; }
 .loader-logo {
   width: min(62vw, 400px); aspect-ratio: 900 / 332;
-  -webkit-mask: url("/assets/brand/logo.png?b=6") center / contain no-repeat;
-          mask: url("/assets/brand/logo.png?b=6") center / contain no-repeat;
+  -webkit-mask: url("/assets/brand/logo.png?b=7") center / contain no-repeat;
+          mask: url("/assets/brand/logo.png?b=7") center / contain no-repeat;
   background: linear-gradient(105deg, var(--ouro) 0%, var(--ouro) 38%, #FFF6DC 50%, var(--ouro) 62%, var(--ouro) 100%);
   background-size: 260% 100%;
   background-position: 110% 0;
@@ -315,7 +315,7 @@ section[id] { scroll-margin-top: var(--nav-h); }
   position: relative; padding: clamp(6rem, 12vw, 10rem) var(--pad); text-align: center; isolation: isolate;
   background:
     linear-gradient(rgba(74,22,32,.82), rgba(42,10,16,.9)),
-    url("/assets/img/brinde-m.webp?b=6") center 30% / cover no-repeat var(--vinho-2);
+    url("/assets/img/brinde-m.webp?b=7") center 30% / cover no-repeat var(--vinho-2);
 }
 .reservas-inner { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
 .reservas .lede { margin: 1.2rem auto 2.2rem; max-width: 44ch; color: rgba(243,233,216,.8); }
@@ -496,7 +496,8 @@ section[id] { scroll-margin-top: var(--nav-h); }
 .menu-item .dish-desc { margin-top: .25rem; font-size: .9rem; color: var(--tinta-2); line-height: 1.45; max-width: 50ch; }
 .menu-item .dish-go { display: block; margin-top: .3rem; font-size: .8rem; color: var(--vinho); opacity: 0; transform: translateX(-4px); transition: opacity .3s, transform .3s var(--ease); }
 .menu-item:hover .dish-go, .menu-item:focus-visible .dish-go { opacity: 1; transform: none; }
-.menu-empty { grid-column: 1 / -1; font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--tinta-2); padding: 1rem 0; }
+.menu-empty { grid-column: 1 / -1; padding: 1.4rem 0 .6rem; display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem; }
+.menu-empty p { font-family: var(--serif); font-style: italic; font-size: 1.25rem; color: var(--tinta-2); max-width: 52ch; line-height: 1.45; }
 .menu-hint { margin-top: 1.2rem; font-size: .85rem; color: var(--tinta-2); }
 @media (hover: none) { .menu-item .dish-go { opacity: 1; transform: none; } }
 
