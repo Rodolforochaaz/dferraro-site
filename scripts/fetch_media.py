@@ -24,12 +24,26 @@ except Exception:
 def drive_download(file_id, dest):
     if dest.exists() and dest.stat().st_size > 1000:
         return True
+    errs = []
     try:
-        subprocess.run([sys.executable, "-m", "gdown", "--fuzzy", "-q", "-O", str(dest), f"https://drive.google.com/uc?id={file_id}"], check=True, timeout=600)
-        return dest.exists() and dest.stat().st_size > 1000
+        import gdown
+        gdown.download(id=file_id, output=str(dest), quiet=True)
+        if dest.exists() and dest.stat().st_size > 1000:
+            return True
     except Exception as e:
-        report.append(f"FALHA download {file_id}: {e}")
-        return False
+        errs.append(f"gdown: {e}")
+    try:
+        url = f"https://drive.usercontent.google.com/download?id={file_id}&export=download&confirm=t"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=300) as r, open(dest, "wb") as f:
+            shutil.copyfileobj(r, f)
+        if dest.exists() and dest.stat().st_size > 1000:
+            return True
+        errs.append("direto: arquivo vazio")
+    except Exception as e:
+        errs.append(f"direto: {e}")
+    report.append(f"FALHA download {file_id}: {' | '.join(errs)}")
+    return False
 
 def url_download(url, dest):
     try:
