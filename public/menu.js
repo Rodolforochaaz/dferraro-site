@@ -7,7 +7,7 @@ window.DF_MENU = {
     pratos: [
       { name: "Arroz de Costela", desc: "Arroz puxado no próprio caldo da costela desfiada, servido com ovo frito de gema mole." },
       { name: "Gnocchi de Mandioquinha", desc: "Massa à base de mandioquinha, servida ao molho rústico de tomates ao sugo e manjericão." },
-      { name: "Fettuccine ao Alfredo", desc: "Massa ao clássico molho italiano de parmesão, pimenta-do-reino e manteiga. Acompanha tiras de filé mignon no molho." },
+      { name: "Fettuccine ao Alfredo", desc: "Massa ao clássico molho italiano de parmesão, pimenta-do-reino e manteiga. Acompanha tiras de filé mignon no molho.", img: "fettuccine-alfredo" },
       { name: "Filé Parmegiana", desc: "Clássico bife à milanesa coberto com molho de tomates e muçarela. Acompanha arroz e batatas fritas." },
       { name: "Filé à Camões", desc: "Bife de alcatra grelhado com ovo frito, arroz, feijão e batatas portuguesas. Homenagem ao poeta Luís Vaz de Camões." }
     ]
@@ -47,8 +47,7 @@ window.DF_MENU = {
       { name: "Risoto à Milanese", desc: "Clássico italiano à base de parmesão e açafrão, servido com tiras de filé de frango empanado.", price: "R$ 65,00" },
       { name: "Fettuccine à Genovese", desc: "Massa ao azeite salteada com camarões, molho pesto, tomates cereja e aspargos frescos.", price: "R$ 79,00" },
       { name: "Penne al Baccalà", desc: "Receita leve que combina penne com lascas de bacalhau, azeite de oliva, tomates cereja, brócolis e azeitonas.", price: "R$ 89,00" },
-      { name: "Ravioli di Verdure e Noci", desc: "Massa vegana artesanal recheada com legumes grelhados, ao pesto de manjericão fresco e farofa de nozes.", price: "R$ 78,00", vegan: true },
-      { name: "Fettuccine ao Alfredo", desc: "Massa ao clássico molho de parmesão, pimenta-do-reino e manteiga, com tiras de filé mignon.", price: "Menu executivo", img: "fettuccine-alfredo", onlyExec: true }
+      { name: "Ravioli di Verdure e Noci", desc: "Massa vegana artesanal recheada com legumes grelhados, ao pesto de manjericão fresco e farofa de nozes.", price: "R$ 78,00", vegan: true }
     ]},
     { id: "sobremesas", name: "Sobremesas", lead: "Um final doce.", items: [
       { name: "Gelatos", desc: "Pistache, coco com castanhas ou baunilha com calda de chocolate.", price: "R$ 18,00" },

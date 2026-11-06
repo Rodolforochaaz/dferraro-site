@@ -1,22 +1,31 @@
 #!/usr/bin/env python3
-"""Baixa as mídias do Google Drive (links públicos), otimiza para web e grava em assets/.
-Roda no GitHub Actions (ver .github/workflows/media.yml)."""
-import json, os, subprocess, sys, shutil, urllib.request
+"""Baixa as mídias do Google Drive (links públicos), otimiza para web e grava em public/assets/.
+Roda no build da Vercel (ver build.sh). Falhas individuais não derrubam o build."""
+import json, os, re, subprocess, sys, shutil, urllib.request
 from pathlib import Path
 from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
 MAN = json.loads((ROOT / "scripts" / "media_manifest.json").read_text())
 RAW = ROOT / ".raw"; RAW.mkdir(exist_ok=True)
-IMG = ROOT / "assets" / "img"; IMG.mkdir(parents=True, exist_ok=True)
-VID = ROOT / "assets" / "video"; VID.mkdir(parents=True, exist_ok=True)
-TH = ROOT / "assets" / "thumbs"; TH.mkdir(parents=True, exist_ok=True)
-BRAND = ROOT / "assets" / "brand"; BRAND.mkdir(parents=True, exist_ok=True)
+ASSETS = ROOT / "public" / "assets"
+IMG = ASSETS / "img"; IMG.mkdir(parents=True, exist_ok=True)
+VID = ASSETS / "video"; VID.mkdir(parents=True, exist_ok=True)
+TH = ASSETS / "thumbs"; TH.mkdir(parents=True, exist_ok=True)
+BRAND = ASSETS / "brand"; BRAND.mkdir(parents=True, exist_ok=True)
 report = []
 
+try:
+    import imageio_ffmpeg
+    FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
+except Exception:
+    FFMPEG = shutil.which("ffmpeg")
+
 def drive_download(file_id, dest):
+    if dest.exists() and dest.stat().st_size > 1000:
+        return True
     try:
-        subprocess.run([sys.executable, "-m", "gdown", "--fuzzy", "-O", str(dest), f"https://drive.google.com/uc?id={file_id}"], check=True, timeout=600)
+        subprocess.run([sys.executable, "-m", "gdown", "--fuzzy", "-q", "-O", str(dest), f"https://drive.google.com/uc?id={file_id}"], check=True, timeout=600)
         return dest.exists() and dest.stat().st_size > 1000
     except Exception as e:
         report.append(f"FALHA download {file_id}: {e}")
@@ -42,25 +51,28 @@ def save_image(src, name):
         c = im.copy()
         if c.width > maxw:
             c = c.resize((maxw, round(h * maxw / w)), Image.LANCZOS)
-        out = IMG / f"{name}{suffix}.webp"
-        c.convert("RGB").save(out, "WEBP", quality=80, method=6)
+        c.convert("RGB").save(IMG / f"{name}{suffix}.webp", "WEBP", quality=80, method=6)
     t = im.copy(); t.thumbnail((360, 360), Image.LANCZOS)
     t.convert("RGB").save(TH / f"{name}.jpg", "JPEG", quality=70)
     report.append(f"ok imagem {name} {w}x{h}")
 
+def duration_of(path):
+    p = subprocess.run([FFMPEG, "-i", str(path)], capture_output=True, text=True)
+    m = re.search(r"Duration: (\d+):(\d+):(\d+\.\d+)", p.stderr)
+    return (int(m[1]) * 3600 + int(m[2]) * 60 + float(m[3])) if m else 6.0
+
 def save_video(src, name):
+    if not FFMPEG:
+        report.append(f"FALHA video {name}: ffmpeg indisponível"); return
     out = VID / f"{name}.mp4"
-    cmd = ["ffmpeg", "-y", "-i", str(src), "-vf", "scale='min(1280,iw)':-2", "-c:v", "libx264", "-crf", "27",
-           "-preset", "slow", "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart", str(out)]
+    cmd = [FFMPEG, "-y", "-i", str(src), "-vf", "scale='min(1280,iw)':-2", "-c:v", "libx264", "-crf", "27",
+           "-preset", "medium", "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart", str(out)]
     subprocess.run(cmd, check=True, capture_output=True)
-    subprocess.run(["ffmpeg", "-y", "-ss", "1", "-i", str(out), "-frames:v", "1", "-q:v", "3", str(VID / f"{name}.jpg")], check=True, capture_output=True)
-    # 4 frames para revisão
-    probe = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out)], capture_output=True, text=True)
-    dur = float(probe.stdout.strip() or 4)
+    dur = duration_of(out)
+    subprocess.run([FFMPEG, "-y", "-ss", f"{min(1.0, dur/3):.2f}", "-i", str(out), "-frames:v", "1", "-q:v", "3", str(VID / f"{name}.jpg")], check=True, capture_output=True)
     for i, frac in enumerate((0.1, 0.35, 0.6, 0.85)):
-        subprocess.run(["ffmpeg", "-y", "-ss", f"{dur*frac:.2f}", "-i", str(out), "-frames:v", "1", "-vf", "scale=360:-2", "-q:v", "6", str(TH / f"{name}-{i+1}.jpg")], capture_output=True)
-    size = out.stat().st_size // 1024
-    report.append(f"ok video {name} {size}KB dur={dur:.1f}s")
+        subprocess.run([FFMPEG, "-y", "-ss", f"{dur*frac:.2f}", "-i", str(out), "-frames:v", "1", "-vf", "scale=360:-2", "-q:v", "6", str(TH / f"{name}-{i+1}.jpg")], capture_output=True)
+    report.append(f"ok video {name} {out.stat().st_size // 1024}KB dur={dur:.1f}s")
 
 for name, fid in MAN.get("images", {}).items():
     dest = RAW / f"{name}.bin"
@@ -83,5 +95,5 @@ for name, url in MAN.get("urls", {}).items():
             report.append(f"ok url {name} {im.size} {im.mode}")
         except Exception as e: report.append(f"ok url {name} (não-imagem) {e}")
 
-(ROOT / "assets" / "REPORT.txt").write_text("\n".join(report) + "\n")
+(ASSETS / "REPORT.txt").write_text("\n".join(report) + "\n")
 print("\n".join(report))
