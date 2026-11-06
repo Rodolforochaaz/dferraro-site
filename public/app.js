@@ -178,7 +178,7 @@
   body.addEventListener("mouseover", (e) => {
     const d = e.target.closest(".dish[data-img]");
     if (!d || window.matchMedia("(hover: none)").matches) return;
-    previewImg.src = `/assets/img/${d.dataset.img}-m.webp`;
+    previewImg.src = `/assets/img/${d.dataset.img}-m.webp?b=2`;
     previewOn = true; preview.classList.add("show");
   });
   body.addEventListener("mouseout", (e) => { if (e.target.closest(".dish[data-img]") && !e.relatedTarget?.closest?.(".dish[data-img]")) { previewOn = false; preview.classList.remove("show"); } });
