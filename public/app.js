@@ -138,6 +138,8 @@
       tabs.forEach((b) => b.setAttribute("aria-selected", String(b.dataset.oc === oc)));
       imgs.forEach((i) => i.classList.toggle("is-on", i.dataset.oc === oc));
       panels.forEach((p) => p.classList.toggle("is-on", p.dataset.oc === oc));
+      const b = tabs.find((t) => t.dataset.oc === oc);
+      if (b && ocList.scrollWidth > ocList.clientWidth + 4) ocList.scrollTo({ left: Math.max(0, b.offsetLeft - 16), behavior: reduced ? "auto" : "smooth" });
     }
     function next() { const i = tabs.findIndex((b) => b.dataset.oc === current); show(tabs[(i + 1) % tabs.length].dataset.oc); }
     function startAuto() { if (reduced || touched) return; stopAuto(); timer = setInterval(next, 5200); }
@@ -221,7 +223,8 @@
       if (it.exec) s -= .5;
       return [s, it];
     }).filter(([s]) => s >= 3).sort((a, b) => b[0] - a[0]);
-    return scored.slice(0, 3).map(([, it]) => it);
+    const best = scored.length ? scored[0][0] : 0;
+    return scored.filter(([s]) => best >= 5 ? s >= 5 : true).slice(0, 3).map(([, it]) => it);
   }
   function answer(raw) {
     const q = norm(raw);

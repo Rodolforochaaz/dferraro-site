@@ -314,8 +314,8 @@ section[id] { scroll-margin-top: var(--nav-h); }
 .reservas {
   position: relative; padding: clamp(6rem, 12vw, 10rem) var(--pad); text-align: center; isolation: isolate;
   background:
-    linear-gradient(rgba(74,22,32,.86), rgba(42,10,16,.92)),
-    url("/assets/img/steak-tartare-m.webp?b=2") center / cover no-repeat var(--vinho-2);
+    linear-gradient(rgba(74,22,32,.82), rgba(42,10,16,.9)),
+    url("/assets/img/brinde-m.webp?b=3") center 30% / cover no-repeat var(--vinho-2);
 }
 .reservas-inner { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
 .reservas .lede { margin: 1.2rem auto 2.2rem; max-width: 44ch; color: rgba(243,233,216,.8); }
