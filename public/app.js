@@ -22,7 +22,10 @@
     setTimeout(() => loader.remove(), 1200);
   }
   document.body.classList.add("lock");
-  const minShow = reduced ? 300 : 2500;
+  let seen = false;
+  try { seen = sessionStorage.getItem("df-intro") === "1"; sessionStorage.setItem("df-intro", "1"); } catch (_) {}
+  if (seen && loader) loader.classList.add("quick");
+  const minShow = reduced ? 300 : seen ? 900 : 2500;
   const start = performance.now();
   window.addEventListener("load", () => {
     const wait = Math.max(0, minShow - (performance.now() - start));
