@@ -123,16 +123,30 @@
   const deepLink = (it) => DG_MENU + "#:~:text=" + encodeURIComponent(it.dg || it.name).replace(/-/g, "%2D");
   const allItems = [];
   MENU.executivo.pratos.forEach((p) => allItems.push({ name: p.name, dg: p.dg, desc: p.desc || "", price: MENU.executivo.price, cat: "Menu executivo", exec: true }));
-  MENU.categories.forEach((c) => c.items.forEach((i) => allItems.push({ name: i.name, dg: i.dg, desc: i.desc || "", price: i.price || "", cat: c.name })));
+  MENU.categories.forEach((c) => c.items.forEach((i) => allItems.push({ name: i.name, dg: i.dg, desc: i.desc || "", price: i.price || "", cat: c.name, signature: !!i.signature })));
   const allWines = [];
   MENU.wines.forEach((g) => g.items.forEach((w) => allWines.push({ name: w.name, dg: w.dg, desc: w.desc || "", price: w.price, cat: g.group, origin: w.origin, wine: true })));
+
+  /* ---------- Contexto: que ocasião o momento pede ---------- */
+  function suggestedOccasion() {
+    const d = nowSP(), day = d.getDay(), h = d.getHours() + d.getMinutes() / 60;
+    if (day === 0 || day === 6) return { oc: "eventos", text: "Fim de semana é quando a casa recebe eventos fechados. Fale com a equipe para o seu." };
+    if (h >= 16.5 && h < 22 && day >= 3) return { oc: "happy", text: `Hoje é ${DAYS[day]} e o happy hour começa no fim da tarde.` };
+    if (h >= 11 && h < 15) return { oc: "negocios", text: "Hora do almoço: menu executivo em três tempos até as 15h." };
+    if (h >= 19 || h < 5) return { oc: "dois", text: day >= 3 ? "Noite de jantar à la carte até as 22h." : "Jantar de quarta a sexta. Reserve a sua noite." };
+    return { oc: "aniversario", text: "Tem data especial chegando? Reserve com antecedência e a equipe prepara tudo." };
+  }
+  const SUG = suggestedOccasion();
 
   /* ---------- Ocasiões ---------- */
   const ocList = $("#oc-list");
   if (ocList) {
     const tabs = $$("button[data-oc]", ocList);
     const imgs = $$(".oc-img"), panels = $$(".oc-panel");
-    let current = "happy", timer = null, touched = false;
+    const DUR = 5200;
+    let current = "happy", timer = null, touched = false, inView = false;
+    const sug = $("#oc-suggest"); if (sug) sug.textContent = SUG.text;
+    function tick(on) { tabs.forEach((b) => b.parentElement.classList.remove("ticking")); if (on && !reduced) { const li = tabs.find((b) => b.dataset.oc === current).parentElement; void li.offsetWidth; li.classList.add("ticking"); } }
     function show(oc) {
       current = oc;
       tabs.forEach((b) => b.setAttribute("aria-selected", String(b.dataset.oc === oc)));
@@ -140,28 +154,89 @@
       panels.forEach((p) => p.classList.toggle("is-on", p.dataset.oc === oc));
       const b = tabs.find((t) => t.dataset.oc === oc);
       if (b && ocList.scrollWidth > ocList.clientWidth + 4) ocList.scrollTo({ left: Math.max(0, b.offsetLeft - 16), behavior: reduced ? "auto" : "smooth" });
+      tick(!!timer);
     }
     function next() { const i = tabs.findIndex((b) => b.dataset.oc === current); show(tabs[(i + 1) % tabs.length].dataset.oc); }
-    function startAuto() { if (reduced || touched) return; stopAuto(); timer = setInterval(next, 5200); }
-    function stopAuto() { if (timer) { clearInterval(timer); timer = null; } }
-    tabs.forEach((b) => {
-      b.addEventListener("click", () => { touched = true; stopAuto(); show(b.dataset.oc); });
-      b.addEventListener("mouseenter", () => { if (window.matchMedia("(hover: hover)").matches) { stopAuto(); show(b.dataset.oc); } });
-    });
-    ocList.addEventListener("mouseleave", () => startAuto());
+    function startAuto() { if (reduced || touched || !inView || timer) return; timer = setInterval(next, DUR); tick(true); }
+    function stopAuto() { if (timer) { clearInterval(timer); timer = null; } tick(false); }
+    tabs.forEach((b) => b.addEventListener("click", () => { touched = true; stopAuto(); show(b.dataset.oc); }));
+    const stage = $(".oc-stage");
+    stage.addEventListener("mouseenter", stopAuto);
+    stage.addEventListener("mouseleave", () => startAuto());
+    show(SUG.oc);
     if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) startAuto(); else stopAuto(); }), { threshold: .3 });
+      const io = new IntersectionObserver((es) => es.forEach((e) => { inView = e.isIntersecting; if (inView) startAuto(); else stopAuto(); }), { threshold: .3 });
       io.observe($("#ocasioes"));
-    } else startAuto();
-    // teclado: setas entre as abas
+    } else { inView = true; startAuto(); }
     ocList.addEventListener("keydown", (e) => {
-      if (e.key !== "ArrowDown" && e.key !== "ArrowUp" && e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(e.key)) return;
       e.preventDefault(); touched = true; stopAuto();
       const i = tabs.findIndex((b) => b.dataset.oc === current);
       const n = (e.key === "ArrowDown" || e.key === "ArrowRight") ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
       show(tabs[n].dataset.oc); tabs[n].focus();
     });
   }
+
+  /* ---------- Cardápio: seleção por categoria + busca instantânea ---------- */
+  const menuTabs = $("#menu-tabs"), menuList = $("#menu-list"), menuSearch = $("#menu-search"), menuHint = $("#menu-hint");
+  const PICKS = { petiscos: 6, carnes: 6, pescados: 3, classicos: 6, sobremesas: 5, drinks: 6 };
+  const TABS = [["destaques", "Destaques"], ["petiscos", "Petiscos"], ["carnes", "Carnes"], ["pescados", "Pescados"], ["classicos", "Massas e clássicos"], ["sobremesas", "Sobremesas"], ["drinks", "Drinks"], ["vinhos", "Vinhos"]];
+  const itemHTML = (it) => `<a class="menu-item" href="${deepLink(it)}" target="_blank" rel="noopener">
+      <span class="dish-row"><span class="dish-name">${it.signature ? '<span class="mark" title="Assinatura da casa">✦</span>' : ""}${esc(it.name)}</span><span class="dish-leader" aria-hidden="true"></span><span class="dish-price">${esc(it.price)}</span></span>
+      ${it.desc ? `<span class="dish-desc">${esc(it.wine ? it.origin + ". " + it.desc : it.desc)}</span>` : ""}
+      <span class="dish-go">Abrir no cardápio digital</span>
+    </a>`;
+  function itemsFor(tab) {
+    if (tab === "destaques") return allItems.filter((i) => i.signature);
+    if (tab === "vinhos") return [allWines.find((w) => /Geisse/.test(w.name)), allWines.find((w) => /Pizzato DNA/.test(w.name)), allWines.find((w) => /Zuccardi/.test(w.name)), allWines.find((w) => /Niepoort/.test(w.name)), allWines.find((w) => /Chianti/.test(w.name)), allWines.find((w) => /Sauvignon Blanc 187/.test(w.name))].filter(Boolean);
+    const cat = MENU.categories.find((c) => c.id === tab);
+    return cat ? cat.items.slice(0, PICKS[tab] || 6).map((i) => allItems.find((a) => a.name === i.name && a.cat === cat.name) || i) : [];
+  }
+  function renderMenu(list, hint) {
+    menuList.innerHTML = list.length ? list.map(itemHTML).join("") : `<p class="menu-empty">Nada com esse nome por aqui. Tente outro ingrediente, ou pergunte ao concierge.</p>`;
+    if (hint) menuHint.textContent = hint;
+  }
+  if (menuTabs) {
+    menuTabs.innerHTML = TABS.map(([id, label], i) => `<button type="button" role="tab" aria-selected="${i === 0}" data-tab="${id}">${label}</button>`).join("");
+    let activeTab = "destaques";
+    const tabBtns = $$("button", menuTabs);
+    function selectTab(id) {
+      activeTab = id; tabBtns.forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === id)));
+      menuSearch.value = "";
+      renderMenu(itemsFor(id), id === "destaques" ? "Uma seleção da casa. Toque em um item para abri-lo no cardápio digital, na versão do dia." : `Uma seleção de ${tabBtns.find((b) => b.dataset.tab === id).textContent.toLowerCase()}. O cardápio digital tem a lista completa.`);
+    }
+    tabBtns.forEach((b) => b.addEventListener("click", () => selectTab(b.dataset.tab)));
+    let t;
+    menuSearch.addEventListener("input", () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const q = menuSearch.value.trim();
+        if (q.length < 2) { selectTab(activeTab); return; }
+        tabBtns.forEach((b) => b.setAttribute("aria-selected", "false"));
+        const hits = search(q, 8);
+        renderMenu(hits, hits.length ? `${hits.length} ${hits.length === 1 ? "resultado" : "resultados"} para “${q}”.` : `Nenhum resultado para “${q}”.`);
+      }, 120);
+    });
+    selectTab("destaques");
+  }
+
+  /* ---------- Números animados ---------- */
+  function countUp(el) {
+    const target = parseFloat(el.dataset.count), dec = parseInt(el.dataset.decimals || "0", 10);
+    const fmt = (v) => dec ? v.toFixed(dec).replace(".", ",") : Math.round(v).toString();
+    if (reduced) { el.textContent = fmt(target); return; }
+    const t0 = performance.now(), dur = 1400;
+    const step = (now) => { const p = Math.min(1, (now - t0) / dur); const e = 1 - Math.pow(1 - p, 3); el.textContent = fmt(target * e); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { countUp(e.target); io.unobserve(e.target); } }), { threshold: .6 });
+    $$(".count").forEach((el) => io.observe(el));
+  }
+
+  /* ---------- Progresso de leitura ---------- */
+  const bar = $("#progress");
+  if (bar) { const paint = () => { const max = document.documentElement.scrollHeight - innerHeight; bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`; }; window.addEventListener("scroll", paint, { passive: true }); paint(); }
 
   /* ---------- Avaliações ---------- */
   const quotes = $("#quotes");
@@ -204,7 +279,7 @@
   function greeting() {
     const h = nowSP().getHours();
     const s = h < 12 ? "Bom dia" : h < 18 ? "Boa tarde" : "Boa noite";
-    return `${s}. Sou o concierge do D'Ferraro. Posso indicar um prato, passar preços e horários ou ajudar com a sua reserva.`;
+    return `${s}. Sou o concierge do D'Ferraro. ${SUG.text} Posso indicar um prato, passar preços e horários ou ajudar com a sua reserva.`;
   }
   const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   const has = (q, ...words) => words.some((w) => q.includes(w));
@@ -212,7 +287,7 @@
   const hit = (it) => `<span class="dish-hit"><b>${esc(it.name)}</b> ${it.price ? `<span>${esc(it.price)}${it.exec ? " (menu executivo em três tempos)" : ""}</span>` : ""}${it.desc ? `<br>${esc(it.desc)}` : ""}<br>${link(deepLink(it), "Abrir no cardápio digital")}</span>`;
   const DEMONYMS = { "chile": "chile", "argentin": "argentina", "uruguai": "uruguai", "portug": "portugal", "espanh": "espanha", "franc": "franca", "itali": "italia", "brasil": "brasil", "alem": "alemanha", "austral": "australia", "africa": "africa do sul", "americano": "estados unidos", "estados unidos": "estados unidos" };
   const STOP = new Set(["o", "a", "os", "as", "de", "do", "da", "dos", "das", "um", "uma", "e", "ou", "que", "tem", "qual", "quais", "quanto", "custa", "preco", "valor", "voces", "vcs", "voce", "vc", "eu", "quero", "queria", "gostaria", "me", "fala", "sobre", "com", "sem", "no", "na", "em", "pra", "para", "por", "ser", "ter", "mais", "menos", "algum", "alguma", "opcao", "opcoes", "prato", "pratos", "cardapio", "menu", "ai", "ne", "esse", "essa", "isso", "aqui", "la", "ola", "oi", "bom", "boa", "dia", "tarde", "noite"]);
-  function search(q) {
+  function search(q, limit) {
     const words = norm(q).split(/[^a-z0-9]+/).filter((w) => w.length > 2 && !STOP.has(w));
     if (!words.length) return [];
     const pool = allItems.concat(allWines);
@@ -224,7 +299,7 @@
       return [s, it];
     }).filter(([s]) => s >= 3).sort((a, b) => b[0] - a[0]);
     const best = scored.length ? scored[0][0] : 0;
-    return scored.filter(([s]) => best >= 5 ? s >= 5 : true).slice(0, 3).map(([, it]) => it);
+    return scored.filter(([s]) => best >= 5 ? s >= 5 : true).slice(0, limit || 3).map(([, it]) => it);
   }
   function answer(raw) {
     const q = norm(raw);
