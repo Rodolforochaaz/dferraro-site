@@ -3,7 +3,7 @@ window.DF_REVIEWS = {
   rating: "4,8",
   count: 64,
   readUrl: "https://www.google.com/search?q=d%27+ferraro+cozinha+contemporanea#lrd=0x94ce512ec4a98b93:0x3ac90c630b6ba5e1,1,,,,",
-  writeUrl: "https://www.google.com/search?q=d%27+ferraro+cozinha+contemporanea#lrd=0x94ce512ec4a98b93:0x3ac90c630b6ba5e1,3,,,,",
+  writeUrl: "https://search.google.com/local/writereview?placeid=ChIJk4upxC5RzpQR4aVrC2MMyTo",
   dguestsUrl: "https://dguests.com/avaliacao/Dferraro",
   items: [
     { author: "Victória Vieira", when: "há 5 meses", stars: 5, text: "Experiência impecável. O ambiente é extremamente agradável, sofisticado e ao mesmo tempo acolhedor, perfeito para relaxar e aproveitar a noite com calma. A iluminação e a decoração criam uma atmosfera muito elegante, e o atendimento foi atencioso do começo ao fim." },

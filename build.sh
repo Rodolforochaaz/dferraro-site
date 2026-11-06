@@ -2,6 +2,7 @@
 # Build na Vercel: baixa e otimiza as mídias do Drive para public/assets e gera a logo sem fundo.
 set -u
 echo "python: $(python3 --version 2>&1)"
+mkdir -p node_modules/.cache
 python3 -m venv .venv && . .venv/bin/activate
 pip install -q gdown pillow numpy imageio-ffmpeg 2>&1 | tail -2
 python scripts/fetch_media.py || echo "fetch_media terminou com avisos (o site segue no ar)"

@@ -255,6 +255,7 @@
     if (has(q, "drink", "coquetel", "caipirinha", "caipiroska", "gin", "negroni", "spritz", "bebida")) { const hits = search(raw); if (hits.length) return `Encontrei:${hits.map(hit).join("")}`; return `Drinks: Aperol Spritz, Negroni, Moscow Mule, Espresso Martini e as caipirinhas da casa, entre outros, de R$ 31,00 a R$ 46,00. ${link(cat("drinks"), "Ver drinks")}.`; }
     if (has(q, "petisco", "entrada", "tapas", "dividir", "aperitivo")) { const c = MENU.categories.find((c) => c.id === "petiscos"); return `Petiscos: ${c.items.map((i) => `${i.name} (${i.price})`).join(", ")}. ${link(cat("petiscos"), "Ver petiscos")}.`; }
     if (has(q, "assinatura", "recomenda", "indica", "sugest", "melhor", "famoso", "especialidade")) { const sig = allItems.filter((i) => /paella|chateaubriand|delon|tartare|ajillo/i.test(i.name) && !i.exec); return `Os pratos de assinatura da casa:${sig.map(hit).join("")}`; }
+    if (has(q, "avaliar", "avaliacao", "review", "nota", "estrela")) return `A casa tem nota 4,8 no Google, com mais de 60 avaliações. Para deixar a sua: ${link(REVIEWS.writeUrl, "avaliar no Google")}.`;
     if (has(q, "obrigad", "valeu", "perfeito", "otimo", "show")) return `Por nada. Quando quiser, a mesa está à sua espera: ${link(RESERVA, "reservar")}.`;
     if (has(q, "oi", "ola", "bom dia", "boa tarde", "boa noite") && q.length < 16) return greeting();
     const hits = search(raw);

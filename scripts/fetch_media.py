@@ -7,7 +7,11 @@ from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
 MAN = json.loads((ROOT / "scripts" / "media_manifest.json").read_text())
-RAW = ROOT / ".raw"; RAW.mkdir(exist_ok=True)
+# cache entre builds (a Vercel preserva node_modules entre deploys)
+CACHE = ROOT / "node_modules" / ".cache" / "dferraro"
+RAW = CACHE / "raw"; RAW.mkdir(parents=True, exist_ok=True)
+OUTCACHE = CACHE / "out"; OUTCACHE.mkdir(parents=True, exist_ok=True)
+MAN_SIG = str(abs(hash(json.dumps(MAN, sort_keys=True))))
 ASSETS = ROOT / "public" / "assets"
 IMG = ASSETS / "img"; IMG.mkdir(parents=True, exist_ok=True)
 VID = ASSETS / "video"; VID.mkdir(parents=True, exist_ok=True)
@@ -55,7 +59,27 @@ def url_download(url, dest):
         report.append(f"FALHA url {url}: {e}")
         return False
 
+def cached(kind, name, outputs, produce):
+    """outputs: lista de Paths finais; produce(): gera os arquivos. Reaproveita do cache quando possível."""
+    cdir = OUTCACHE / kind / name
+    if cdir.exists() and all((cdir / o.name).exists() for o in outputs):
+        for o in outputs:
+            shutil.copy2(cdir / o.name, o)
+        report.append(f"cache {kind} {name}")
+        return True
+    produce()
+    cdir.mkdir(parents=True, exist_ok=True)
+    for o in outputs:
+        if o.exists():
+            shutil.copy2(o, cdir / o.name)
+    return False
+
 def save_image(src, name):
+    outs = [IMG / f"{name}.webp", IMG / f"{name}-m.webp", TH / f"{name}.jpg"]
+    if cached("img", name, outs, lambda: _save_image(src, name)):
+        return
+
+def _save_image(src, name):
     im = Image.open(src)
     im = ImageOps.exif_transpose(im)
     if im.mode not in ("RGB", "RGBA"):
@@ -76,6 +100,13 @@ def duration_of(path):
     return (int(m[1]) * 3600 + int(m[2]) * 60 + float(m[3])) if m else 6.0
 
 def save_video(src, name):
+    outs = [VID / f"{name}.mp4", VID / f"{name}.jpg"] + [TH / f"{name}-{i}.jpg" for i in (1, 2, 3, 4)]
+    if name in MAN.get("mobile", []):
+        outs.append(VID / f"{name}-m.mp4")
+    if cached("video", name, outs, lambda: _save_video(src, name)):
+        return
+
+def _save_video(src, name):
     if not FFMPEG:
         report.append(f"FALHA video {name}: ffmpeg indisponível"); return
     out = VID / f"{name}.mp4"
