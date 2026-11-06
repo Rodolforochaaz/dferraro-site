@@ -1,0 +1,43 @@
+{
+  "images": {
+    "steak-tartare": "1ZpnyNU0WDGQPvGqppnFej_LKSZk9BkhF",
+    "paella": "1sw581PE6cncOtpkdjjcuvxrJ3jh40qsk",
+    "camaroes-al-ajillo": "1rCcsZVUbsK2tWwKCWUsTPdTi7dRW767X",
+    "fettuccine-alfredo": "1dbmT9g7D2OjqwoEsxvwcZnz8en54OQA-",
+    "arroz-de-costela": "1kUibUGrCwM5cAtlgGyLETMk0NYagRm6k",
+    "saint-peter": "11iBVM1nOg-ITBsA7nPOTSCEyOPA_HmxG",
+    "tulipinhas": "16P43c6MF7WEOHyGCAYsLGfJhUeB_30oQ",
+    "tapas-jamon": "140ktG1QuvDPU000tFczotfSdb6LBerNq",
+    "aperol-spritz": "1Yq_0CDdnSma2pA_nnG5O43hOCv4qwK-h",
+    "margarita": "1J8Cg13EdM2mPp-RhE5Ex9ojakDlAfNbj",
+    "clericot": "1laxDjV5Fx-5ZbHYPhjmSSIVBJ0rjQK6z",
+    "moscow-mule": "1q459vlRkg8GUoGzM2C3SVhs_hXCSzk12",
+    "fachada": "1RMb-TbS3CnWEPSV4BSQ9O7RYqtd5aCMK",
+    "prato-peixe": "1EPQsQ_wxnicLaStgqm47Kmda7KlFwXh3",
+    "g-cheesecake": "1b97FDzUx7gDpwcDNFN7f0P5r-CeXsEIa",
+    "g-pudim": "197qQkugjp_ZZVWQxwWjHdU-zMIEOZEi3",
+    "g-interior": "1Gm0uxYDdCCVbpMRt4N19jdG-aMWkDldN",
+    "g-croquetes": "1MYqLiTpDqxEyO0h4BhyaL5m2e3DZPVs7",
+    "g-fettuccine": "10J0sWalOMOX5owVHGYXK5VJy_Wwytmyf",
+    "g-localizacao": "1o-DCQsUBKWsIOvkPNWJ13NrnHY3vX4Mk",
+    "g-reserva": "1XE8km8YwhDHLAZjBtDpxmam4hDGdiLnc",
+    "g-harmonia": "1YcMM7NLbNvO4elhqgbd-REo-VPGXeHk9",
+    "g-frescor": "1evRho-amri2HoLkedybPhj9ZVbMzaefu",
+    "g-hl1": "1s0jVcQRDHO-fYRuZvWsNNi6tr21BKJwx",
+    "g-hl3": "1NdDaedIoJHXrbG4R_V0oBj2tWJayAU38"
+  },
+  "videos": {
+    "v-fachada": "1ALdgVhO4zLQcbmZyX6F2SMcbWErzR7rK",
+    "v-buffet": "1NkZhJA_kQPPmxRhnyU9zLetQUmKJwv_9",
+    "v-salao": "16SiOxcDqYsFWFJsgzlhNg1lPJ_uIEDGn",
+    "v-margarita": "1ndausxgvgf9fmwA4R6suuCAAp7KKQxDw",
+    "v-casal": "10dZDZDpTux8f6RejgF5x9sZ02dxRtG2B",
+    "v-letreiro": "177WQ4Y6qjmiWHTOcDNwgGTKO14sxNWMa",
+    "v-cidade": "1LJZG-ECkIe34JwbVGalkSADfAGlLIZrU"
+  },
+  "urls": {
+    "logo-oficial": "https://dferrarocozinha.com.br/wp-content/uploads/2026/09/Logotipo-Apresentacao.png",
+    "dg-avatar": "https://dg-media.com.br/avatars/avatar_707640_1778515429.png",
+    "dg-banner": "https://dg-media.com.br/banners/banner_707640_1778533407.png"
+  }
+}

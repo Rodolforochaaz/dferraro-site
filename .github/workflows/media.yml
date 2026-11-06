@@ -1,0 +1,31 @@
+name: Mídias do Drive
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/media_manifest.json"
+      - "scripts/fetch_media.py"
+      - ".github/workflows/media.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -q gdown pillow
+      - run: python scripts/fetch_media.py
+      - name: Commit assets
+        run: |
+          git config user.name "dferraro-media-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add assets
+          git diff --cached --quiet || git commit -m "Mídias otimizadas do Drive"
+          git push
