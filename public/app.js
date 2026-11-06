@@ -30,6 +30,18 @@
   });
   setTimeout(finishLoader, 4500); // nunca prende a página
 
+  /* ---------- Vídeos: fonte leve no celular, sem autoplay se o visitante pediu menos movimento ---------- */
+  const smallScreen = window.matchMedia("(max-width: 700px)").matches;
+  const saveData = navigator.connection && navigator.connection.saveData;
+  $$("video[data-src]").forEach((v) => {
+    if (reduced || saveData) { v.removeAttribute("autoplay"); return; }
+    const src = smallScreen && v.dataset.srcM ? v.dataset.srcM : v.dataset.src;
+    const load = () => { if (v.src) return; v.src = src; v.load(); v.play().catch(() => {}); };
+    if (v.classList.contains("hero-video")) load();
+    else if ("IntersectionObserver" in window) { const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { load(); io.disconnect(); } }), { rootMargin: "300px" }); io.observe(v); }
+    else load();
+  });
+
   /* ---------- Navegação ---------- */
   const nav = $("#nav");
   const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 40);

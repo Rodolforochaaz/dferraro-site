@@ -79,10 +79,13 @@ def save_video(src, name):
     if not FFMPEG:
         report.append(f"FALHA video {name}: ffmpeg indisponível"); return
     out = VID / f"{name}.mp4"
-    cmd = [FFMPEG, "-y", "-i", str(src), "-vf", "scale='min(1280,iw)':-2", "-c:v", "libx264", "-crf", "27",
+    cmd = [FFMPEG, "-y", "-i", str(src), "-vf", "scale='min(1280,iw)':-2", "-c:v", "libx264", "-crf", "28",
            "-preset", "medium", "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart", str(out)]
     subprocess.run(cmd, check=True, capture_output=True)
     dur = duration_of(out)
+    if name in MAN.get("mobile", []):
+        subprocess.run([FFMPEG, "-y", "-i", str(src), "-vf", "scale='min(720,iw)':-2", "-c:v", "libx264", "-crf", "31",
+                        "-preset", "medium", "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart", str(VID / f"{name}-m.mp4")], check=True, capture_output=True)
     subprocess.run([FFMPEG, "-y", "-ss", f"{min(1.0, dur/3):.2f}", "-i", str(out), "-frames:v", "1", "-q:v", "3", str(VID / f"{name}.jpg")], check=True, capture_output=True)
     for i, frac in enumerate((0.1, 0.35, 0.6, 0.85)):
         subprocess.run([FFMPEG, "-y", "-ss", f"{dur*frac:.2f}", "-i", str(out), "-frames:v", "1", "-vf", "scale=360:-2", "-q:v", "6", str(TH / f"{name}-{i+1}.jpg")], capture_output=True)
