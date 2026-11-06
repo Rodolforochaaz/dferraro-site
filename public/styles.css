@@ -100,8 +100,8 @@ strong { font-weight: 500; }
 #loader.done { opacity: 0; visibility: hidden; }
 .loader-logo {
   width: min(62vw, 400px); aspect-ratio: 900 / 332;
-  -webkit-mask: url("/assets/brand/logo.png?b=4") center / contain no-repeat;
-          mask: url("/assets/brand/logo.png?b=4") center / contain no-repeat;
+  -webkit-mask: url("/assets/brand/logo.png?b=5") center / contain no-repeat;
+          mask: url("/assets/brand/logo.png?b=5") center / contain no-repeat;
   background: linear-gradient(105deg, var(--ouro) 0%, var(--ouro) 38%, #FFF6DC 50%, var(--ouro) 62%, var(--ouro) 100%);
   background-size: 260% 100%;
   background-position: 110% 0;
@@ -315,7 +315,7 @@ section[id] { scroll-margin-top: var(--nav-h); }
   position: relative; padding: clamp(6rem, 12vw, 10rem) var(--pad); text-align: center; isolation: isolate;
   background:
     linear-gradient(rgba(74,22,32,.82), rgba(42,10,16,.9)),
-    url("/assets/img/brinde-m.webp?b=4") center 30% / cover no-repeat var(--vinho-2);
+    url("/assets/img/brinde-m.webp?b=5") center 30% / cover no-repeat var(--vinho-2);
 }
 .reservas-inner { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
 .reservas .lede { margin: 1.2rem auto 2.2rem; max-width: 44ch; color: rgba(243,233,216,.8); }
@@ -517,3 +517,11 @@ section[id] { scroll-margin-top: var(--nav-h); }
   .oc-list li.ticking::after { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .menu-item { animation: none; } .oc-list li.ticking::after { animation: none; } }
+
+/* ---------- Chat no celular: sem zoom do iOS e ajustado ao teclado ---------- */
+@media (max-width: 600px) {
+  .concierge-form input, .menu-search input { font-size: 16px; }
+  .concierge-panel { height: var(--vvh, 100dvh); top: var(--vvt, 0); bottom: auto; }
+  .concierge-panel .concierge-log { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  html.chat-open, html.chat-open body { overflow: hidden; height: 100%; }
+}

@@ -255,11 +255,30 @@
   /* ---------- Concierge ---------- */
   const cBtn = $("#concierge-btn"), cPanel = $("#concierge-panel"), cClose = $("#concierge-close"), log = $("#concierge-log"), form = $("#concierge-form"), input = $("#concierge-input");
   let greeted = false;
+  const isPhone = () => window.matchMedia("(max-width: 600px)").matches;
+  function fitViewport() {
+    if (!isPhone() || cPanel.hidden || !window.visualViewport) return;
+    const vv = window.visualViewport;
+    cPanel.style.setProperty("--vvh", vv.height + "px");
+    cPanel.style.setProperty("--vvt", vv.offsetTop + "px");
+    log.scrollTop = log.scrollHeight;
+  }
+  if (window.visualViewport) { window.visualViewport.addEventListener("resize", fitViewport); window.visualViewport.addEventListener("scroll", fitViewport); }
   function openC(open) {
     cBtn.setAttribute("aria-expanded", String(open));
-    if (open) { cPanel.hidden = false; requestAnimationFrame(() => cPanel.classList.add("open")); if (!greeted) { greeted = true; botSay(greeting()); } setTimeout(() => input.focus(), 350); }
-    else { cPanel.classList.remove("open"); setTimeout(() => { cPanel.hidden = true; }, 350); }
+    if (open) {
+      cPanel.hidden = false; requestAnimationFrame(() => cPanel.classList.add("open"));
+      if (isPhone()) { document.documentElement.classList.add("chat-open"); fitViewport(); }
+      if (!greeted) { greeted = true; botSay(greeting()); }
+      if (!isPhone()) setTimeout(() => input.focus(), 350);
+    } else {
+      cPanel.classList.remove("open"); document.documentElement.classList.remove("chat-open"); input.blur();
+      cPanel.style.removeProperty("--vvh"); cPanel.style.removeProperty("--vvt");
+      setTimeout(() => { cPanel.hidden = true; }, 350);
+    }
   }
+  input.addEventListener("focus", () => setTimeout(fitViewport, 300));
+  input.addEventListener("blur", () => setTimeout(fitViewport, 300));
   cBtn.addEventListener("click", () => openC(cPanel.hidden));
   const openMenuBtn = $("#open-menu");
   if (openMenuBtn) openMenuBtn.addEventListener("click", () => { openC(true); setTimeout(() => { if (log.children.length <= 1) botSay("Qual prato você quer consultar? Posso passar o preço e abrir o item direto no cardápio digital."); }, 500); });
@@ -279,7 +298,7 @@
   function greeting() {
     const h = nowSP().getHours();
     const s = h < 12 ? "Bom dia" : h < 18 ? "Boa tarde" : "Boa noite";
-    return `${s}. Sou o concierge do D'Ferraro. ${SUG.text} Posso indicar um prato, passar preços e horários ou ajudar com a sua reserva.`;
+    return `${s}. Sou o assistente inteligente do D'Ferraro. ${SUG.text} Posso indicar um prato, passar preços e horários ou ajudar com a sua reserva.`;
   }
   const norm = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   const has = (q, ...words) => words.some((w) => q.includes(w));
